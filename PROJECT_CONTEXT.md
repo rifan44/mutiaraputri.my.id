@@ -6,7 +6,7 @@
 
 - **Nama:** Mutiara Putri Portfolio
 - **Tujuan:** Website portofolio pribadi dwibahasa untuk kebutuhan kampus dan lamaran profesional, dengan panel admin serta ekspor CV dan portofolio PDF.
-- **Status:** In Progress — aplikasi sumber sudah disusun; koneksi MariaDB, akun admin, dan deployment belum dikonfigurasi.
+- **Status:** In Progress — source code sudah dipush ke GitHub; koneksi MariaDB, akun admin, dan deployment belum dikonfigurasi.
 - **Branch aktif:** `main`
 - **Remote:** `origin` → `https://github.com/rifan44/mutiaraputri.my.id.git`
 - **Terakhir diperbarui:** 2026-11-23
@@ -83,7 +83,7 @@ writable/                session, cache, log, dan file runtime CI
 - **Tujuan:** Menyediakan website portofolio yang bisa diedit, responsif, dwibahasa, dan menghasilkan dokumen PDF.
 - **Acceptance criteria:** Website publik; panel admin terproteksi; isi awal sesuai fakta pengguna; file CV/portofolio A4; kode di repository GitHub.
 - **File/area terkait:** `app/`, `public/assets/`, `app/Database/`, `composer.json`, `README.md`, `PROJECT_CONTEXT.md`.
-- **Status terakhir:** Implementasi lokal disusun; konfigurasi server dan pemeriksaan runtime belum dilakukan.
+- **Status terakhir:** Implementasi dipush pada commit `7722e24`; konfigurasi server dan pemeriksaan runtime belum dilakukan.
 
 ## 7. Bug dan kendala
 
@@ -112,7 +112,7 @@ writable/                session, cache, log, dan file runtime CI
 
 ## 10. Handoff terakhir
 
-- **Ringkasan perubahan:** CodeIgniter 4 app starter disesuaikan menjadi website portofolio dwibahasa dengan MariaDB, panel admin, upload gambar, dan ekspor PDF.
+- **Ringkasan perubahan:** CodeIgniter 4 app starter disesuaikan menjadi website portofolio dwibahasa dengan MariaDB, panel admin, upload gambar, dan ekspor PDF; dipush ke branch `main` pada commit `7722e24`.
 - **File yang berubah:** Controller, migration, seeder, filter, helper, view, CSS/JS, konfigurasi, dependency, README, dan konteks proyek.
 - **Hal yang perlu diperiksa berikutnya:** Koneksi database, kredensial admin lokal, responsif pada perangkat nyata, hasil ekspor PDF, dan status DNS/CGNAT.
 - **Perintah untuk melanjutkan:** `composer install`, `php spark migrate`, `php spark db:seed PortfolioSeeder`, `php spark portfolio:create-admin`, `php spark serve`.
