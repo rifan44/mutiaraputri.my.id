@@ -6,10 +6,10 @@
 
 - **Nama:** Mutiara Putri Portfolio
 - **Tujuan:** Website portofolio pribadi dwibahasa untuk kebutuhan kampus dan lamaran profesional, dengan panel admin serta ekspor CV dan portofolio PDF.
-- **Status:** In Progress — source code sudah dipush ke GitHub; koneksi MariaDB, akun admin, dan deployment belum dikonfigurasi.
+- **Status:** Aplikasi berjalan lokal melalui Laragon; MariaDB lokal, migration, dan seeder sudah aktif. Akun admin belum dibuat; domain dan home server belum dikonfigurasi.
 - **Branch aktif:** `main`
 - **Remote:** `origin` → `https://github.com/rifan44/mutiaraputri.my.id.git`
-- **Terakhir diperbarui:** 2026-11-23
+- **Terakhir diperbarui:** 2026-11-24
 
 ## 2. Tech stack aktual
 
@@ -17,7 +17,7 @@
 |---|---|---|
 | Frontend | PHP server-rendered views, CSS, JavaScript tanpa bundler | `app/Views/`, `public/assets/` |
 | Backend | CodeIgniter 4.7.6; PHP `^8.2` | `composer.lock`, `composer.json` |
-| Database | MariaDB/MySQL melalui driver MySQLi; belum dikoneksikan | `app/Config/Database.php`, `app/Database/Migrations/`, `.env.example` |
+| Database | MariaDB 11.8.6 lokal pada `127.0.0.1:3307`; driver MySQLi | `app/Config/Database.php`, migration, konfigurasi lokal `.env` (diabaikan Git) |
 | Query builder | CodeIgniter Database Forge dan Query Builder | Migration, seeder, controller |
 | Authentication | Login berbasis session, `password_hash`, filter admin | `app/Controllers/Admin/Auth.php`, `app/Filters/AdminAuth.php` |
 | Styling | CSS khusus cream dan emerald, responsif; tanpa Tailwind/build step | `public/assets/css/portfolio.css`, `public/assets/css/admin.css` |
@@ -58,13 +58,13 @@ writable/                session, cache, log, dan file runtime CI
 |---|---|---|
 | Website publik Indonesia dan Inggris | Done | `/` dan `/en`; seluruh teks utama tersedia dalam dua bahasa. |
 | Tampilan responsif | Done | CSS breakpoint ponsel, tablet, desktop; menu mobile. |
-| Profil dan foto | Done | Form admin untuk ringkasan, headline, lokasi, kontak, foto, dan tautan. |
+| Profil dan foto | Done | Form admin untuk ringkasan, headline, lokasi, kontak, foto, dan tautan; editor foto mendukung crop 4:5/1:1, drag posisi, zoom, dan penyesuaian otomatis. |
 | Konten editable | Done | Pendidikan, pengalaman, proyek, keahlian, sertifikat; urutan dan visibilitas dapat diatur. |
 | Panel `/admin` | Done | Login, dashboard, logout, ubah kata sandi, proteksi CSRF. |
-| Unggah media | Done | JPG, PNG, WebP, maksimal 5 MB, nama acak; folder media tidak di-commit. |
-| Ekspor PDF | Done (implementasi) | `/cv/{id|en}` dan `/portfolio/{id|en}/pdf`, menggunakan Dompdf. Belum dilakukan pemeriksaan visual PDF. |
-| Data awal Mutiara Putri | Done | Nama, Agribisnis, semester 5, Universitas Muhammadiyah Sukabumi. Kontak/proyek/pengalaman tidak dikarang. |
-| MariaDB | In Progress | Migration dan seeder tersedia; belum terhubung ke database lokal/server. |
+| Unggah media | Done | JPG, PNG, WebP, maksimal 5 MB, nama acak; hasil crop disimpan dan dipakai di website serta PDF. |
+| Ekspor PDF | Done | `/cv/{id|en}` dan `/portfolio/{id|en}/pdf`, menggunakan Dompdf; CV dan portofolio Indonesia/Inggris sudah dirender dan ditinjau sebagai PDF A4 satu halaman. |
+| Data awal Mutiara Putri | Done | Nama, universitas, dan program studi ditampilkan sewajarnya di pendidikan; semester 5 hanya ada di deskripsi profil singkat. Kontak/proyek/pengalaman tidak dikarang. |
+| MariaDB | Done (lokal) | MariaDB lokal terisolasi di port 3307; migration dan seeder selesai. Database produksi belum disiapkan. |
 | Domain dan home server | Not started | DNS, HTTPS, reverse proxy/tunnel, dan document root `public/` belum dikonfigurasi. |
 
 ## 5. Keputusan teknis
@@ -79,17 +79,17 @@ writable/                session, cache, log, dan file runtime CI
 
 ## 6. Pekerjaan aktif
 
-- **Task:** Menyusun website portofolio dan mendorong perubahan ke GitHub.
+- **Task:** Menyempurnakan UI, editor foto, dan menjalankan aplikasi lokal melalui Laragon; sinkronkan source ke GitHub.
 - **Tujuan:** Menyediakan website portofolio yang bisa diedit, responsif, dwibahasa, dan menghasilkan dokumen PDF.
 - **Acceptance criteria:** Website publik; panel admin terproteksi; isi awal sesuai fakta pengguna; file CV/portofolio A4; kode di repository GitHub.
 - **File/area terkait:** `app/`, `public/assets/`, `app/Database/`, `composer.json`, `README.md`, `PROJECT_CONTEXT.md`.
-- **Status terakhir:** Implementasi dipush pada commit `7722e24`; konfigurasi server dan pemeriksaan runtime belum dilakukan.
+- **Status terakhir:** Website aktif di `http://localhost/mutiaraputri/`; halaman publik, login admin, dan empat endpoint PDF merespons HTTP 200. Belum ada akun admin.
 
 ## 7. Bug dan kendala
 
 | Masalah | Cara reproduksi | Status | Catatan |
 |---|---|---|---|
-| Belum ada koneksi MariaDB lokal | Buka `.env.example` dan lihat README untuk setup | Menunggu konfigurasi | Tidak ada credential `.env` yang tersedia atau diminta. |
+| Akun admin lokal belum dibuat | Jalankan `php spark portfolio:create-admin` dari folder proyek | Menunggu tindakan pengguna | Buat akun dengan identitas dan kata sandi pilihan sendiri; jangan menyimpan kredensial di repo. |
 | Domain belum diarahkan ke home server | Akses domain setelah DNS/HTTPS dikonfigurasi | Menunggu konfigurasi jaringan | Perlu memastikan akses publik dan status CGNAT. |
 
 ## 8. Pengujian
@@ -98,21 +98,19 @@ writable/                session, cache, log, dan file runtime CI
 - **Lint command:** Belum ditambahkan.
 - **Type-check:** Tidak digunakan.
 - **Build command frontend:** Tidak digunakan.
-- **Hasil terakhir:** Tidak ada test atau preview runtime yang dijalankan.
+- **Hasil terakhir:** `php -l` untuk file PHP yang berubah dan `node --check public/assets/js/photo-editor.js` lolos. Endpoint publik/admin/PDF mengembalikan HTTP 200; PDF A4 dirender untuk pemeriksaan visual.
 - **Dependency audit:** `composer audit --no-interaction` setelah memperbarui Dompdf melaporkan tidak ada advisory.
-- **Belum diuji:** Syntax melalui runtime, koneksi/migration MariaDB, login admin, upload, tampilan di browser, dan hasil PDF A4.
+- **Belum diuji:** Login admin, unggah/crop foto menggunakan foto pilihan, dan tampilan pada perangkat fisik. Suite PHPUnit tidak dijalankan.
 
 ## 9. Next tasks
 
-1. [ ] Salin `.env.example` ke `.env`, isi URL dan akses MariaDB.
-2. [ ] Buat database, jalankan `php spark migrate` dan `php spark db:seed PortfolioSeeder`.
-3. [ ] Buat akun menggunakan `php spark portfolio:create-admin`, lalu isi foto/kontak/proyek dari `/admin`.
-4. [ ] Arahkan document root ke `public/`, pasang HTTPS, dan konfigurasi DNS/server sesuai jaringan home server.
-5. [ ] Jalankan pemeriksaan aplikasi dan tinjau hasil PDF sebelum dipakai untuk pengajuan.
+1. [ ] Jalankan `php spark portfolio:create-admin` di Laragon, lalu isi foto/kontak/proyek dari `/admin`.
+2. [ ] Tinjau hasil crop dengan foto pilihan dan lengkapi konten sebelum memakai PDF untuk pengajuan.
+3. [ ] Arahkan document root ke `public/`, pasang HTTPS, dan konfigurasi DNS/server sesuai jaringan home server.
 
 ## 10. Handoff terakhir
 
-- **Ringkasan perubahan:** CodeIgniter 4 app starter disesuaikan menjadi website portofolio dwibahasa dengan MariaDB, panel admin, upload gambar, dan ekspor PDF; dipush ke branch `main` pada commit `7722e24`.
+- **Ringkasan perubahan:** Tampilan portofolio dibuat lebih umum, semester dihapus dari headline/pendidikan, editor foto crop ditambahkan, MariaDB lokal dan Laragon aktif, serta PDF A4 empat endpoint ditinjau secara visual. Perubahan source saat ini menunggu commit/push.
 - **File yang berubah:** Controller, migration, seeder, filter, helper, view, CSS/JS, konfigurasi, dependency, README, dan konteks proyek.
-- **Hal yang perlu diperiksa berikutnya:** Koneksi database, kredensial admin lokal, responsif pada perangkat nyata, hasil ekspor PDF, dan status DNS/CGNAT.
-- **Perintah untuk melanjutkan:** `composer install`, `php spark migrate`, `php spark db:seed PortfolioSeeder`, `php spark portfolio:create-admin`, `php spark serve`.
+- **Hal yang perlu diperiksa berikutnya:** Buat akun admin lokal, unggah foto pilihan dan coba crop, lengkapi konten, lalu siapkan domain/home server setelah pengguna siap.
+- **Perintah untuk melanjutkan:** `php spark portfolio:create-admin` dari folder repository. Aplikasi aktif melalui Laragon di `http://localhost/mutiaraputri/`.

@@ -35,7 +35,7 @@ Website portofolio pribadi dwibahasa untuk Mutiara Putri. Dibangun dengan CodeIg
    php spark db:seed PortfolioSeeder
    ```
 
-   Seeder hanya menambahkan nama, program studi, universitas, dan semester yang sudah disediakan. Kontak, pengalaman, proyek, sertifikat, dan keahlian bisa ditambahkan melalui admin.
+   Seeder menambahkan nama, program studi, universitas, dan ringkasan singkat dari informasi yang sudah disediakan. Kontak, pengalaman, proyek, sertifikat, dan keahlian bisa ditambahkan melalui admin.
 
 5. Buat akun admin dari terminal. Kata sandi diminta secara interaktif dan hanya disimpan sebagai hash:
 
@@ -43,13 +43,23 @@ Website portofolio pribadi dwibahasa untuk Mutiara Putri. Dibangun dengan CodeIg
    php spark portfolio:create-admin
    ```
 
-6. Untuk pengembangan lokal:
+6. Untuk pengembangan lokal tanpa Laragon:
 
    ```bash
    php spark serve
    ```
 
    Buka `http://localhost:8080/`; panel admin berada di `/admin`.
+
+## Menjalankan di Laragon (Windows)
+
+1. Jalankan Apache dan MariaDB/MySQL dari Laragon. Untuk instalasi Laragon yang sudah memiliki MySQL aktif, gunakan port database terpisah agar tidak mengganggu situs lokal lain; konfigurasi aplikasi harus memakai port yang sama.
+2. Buat database `mutiaraputri_portfolio`, salin `.env.example` menjadi `.env`, lalu isi host, port, nama database, username, dan password database lokal. Atur `app.baseURL` ke URL lokal yang dipakai.
+3. Letakkan repository di `C:\laragon\www\mutiaraputri.my.id`, atau buat virtual host yang document root-nya mengarah ke folder `public/`. Tanpa virtual host, akses proyek melalui alias/vhost Laragon yang diarahkan ke `public/`.
+4. Jalankan `composer install`, `php spark migrate`, dan `php spark db:seed PortfolioSeeder` dari terminal pada folder repository.
+5. Buka URL lokal aplikasi, lalu buat akun admin melalui `php spark portfolio:create-admin`.
+
+Pada setup Laragon pengembangan yang sedang dipakai untuk proyek ini, aplikasi diakses melalui `http://localhost/mutiaraputri/` dan MariaDB terisolasi berjalan di `127.0.0.1:3307`. `.env` lokal berisi konfigurasi koneksi tersebut dan tidak dilacak Git.
 
 ## Hosting di home server
 

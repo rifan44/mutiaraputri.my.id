@@ -14,8 +14,8 @@ class PortfolioSeeder extends Seeder
             $this->db->table('portfolio_profile')->insert([
                 'id' => 1,
                 'full_name' => 'Mutiara Putri',
-                'headline_id' => 'Mahasiswa Agribisnis',
-                'headline_en' => 'Agribusiness Student',
+                'headline_id' => 'Portofolio Pribadi',
+                'headline_en' => 'Personal Portfolio',
                 'summary_id' => 'Mahasiswa Agribisnis semester 5 di Universitas Muhammadiyah Sukabumi.',
                 'summary_en' => 'A fifth-semester Agribusiness student at Universitas Muhammadiyah Sukabumi.',
                 'created_at' => $now,
@@ -26,8 +26,8 @@ class PortfolioSeeder extends Seeder
         if (! $this->db->table('education')->countAllResults()) {
             $this->db->table('education')->insert([
                 'institution' => 'Universitas Muhammadiyah Sukabumi',
-                'program_id' => 'Agribisnis · Semester 5',
-                'program_en' => 'Agribusiness · 5th semester',
+                'program_id' => 'Agribisnis',
+                'program_en' => 'Agribusiness',
                 'is_current' => 1,
                 'sort_order' => 1,
                 'is_visible' => 1,

@@ -22,8 +22,8 @@ class CreatePortfolioTables extends Migration
         $this->forge->addField([
             'id' => ['type' => 'TINYINT', 'constraint' => 3, 'unsigned' => true],
             'full_name' => ['type' => 'VARCHAR', 'constraint' => 120, 'default' => 'Mutiara Putri'],
-            'headline_id' => ['type' => 'VARCHAR', 'constraint' => 180, 'default' => 'Mahasiswa Agribisnis'],
-            'headline_en' => ['type' => 'VARCHAR', 'constraint' => 180, 'default' => 'Agribusiness Student'],
+            'headline_id' => ['type' => 'VARCHAR', 'constraint' => 180, 'default' => 'Portofolio Pribadi'],
+            'headline_en' => ['type' => 'VARCHAR', 'constraint' => 180, 'default' => 'Personal Portfolio'],
             'summary_id' => ['type' => 'TEXT', 'null' => true],
             'summary_en' => ['type' => 'TEXT', 'null' => true],
             'location' => ['type' => 'VARCHAR', 'constraint' => 160, 'null' => true],

@@ -83,7 +83,7 @@ button, input, textarea { font: inherit; }
 
 .section-pad { padding: 108px 0; }
 .about-section { background: var(--paper); }
-.about-grid { display: grid; grid-template-columns: 190px minmax(0, 1fr) 110px; gap: 44px; align-items: start; }
+.about-grid { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 44px; align-items: start; }
 .section-label { display: inline-flex; align-items: center; gap: 10px; color: var(--emerald); font-size: 9px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; white-space: nowrap; }
 .section-label > span:first-child { color: #9ba79d; font-family: var(--serif); font-size: 13px; font-weight: 500; }
 .label-rule { width: 34px; height: 1px; background: #a8b8ac; }
@@ -197,7 +197,7 @@ button, input, textarea { font: inherit; }
   .hero { min-height: 610px; grid-template-columns: 1fr .85fr; gap: 4%; }
   .hero-copy { padding-left: 5px; }
   .hero-visual { height: 430px; margin-right: 8px; }
-  .about-grid { grid-template-columns: 135px minmax(0,1fr) 75px; gap: 25px; }
+  .about-grid { grid-template-columns: 135px minmax(0,1fr); gap: 25px; }
   .section-pad { padding: 88px 0; }
 }
 
@@ -230,7 +230,6 @@ button, input, textarea { font: inherit; }
   .scroll-cue { left: 0; bottom: 25px; }
   .section-pad { padding: 72px 0; }
   .about-grid { grid-template-columns: 1fr; gap: 28px; }
-  .about-aside { display: none; }
   .about-content h2, .section-heading h2, .projects-heading h2, .skills-grid h2, .contact-content h2 { font-size: clamp(34px, 9vw, 46px); }
   .about-text { font-size: 14px; }
   .section-heading { gap: 13px; margin-bottom: 28px; }
@@ -269,6 +268,14 @@ button, input, textarea { font: inherit; }
   .hero-actions { align-items: stretch; }
   .button { flex: 1; gap: 10px; padding-inline: 13px; }
   .project-image { height: 205px; }
+}
+
+@media (max-width: 760px) {
+  .nav-wrap { position: relative; }
+  .site-header .nav-wrap > .menu-toggle { display: grid; flex: 0 0 42px; }
+  .hero { grid-template-columns: minmax(0, 1fr); }
+  .hero-copy { min-width: 0; }
+  .hero-description { width: 100%; max-width: 530px; white-space: normal; }
 }
 
 @media (prefers-reduced-motion: reduce) {

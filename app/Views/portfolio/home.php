@@ -9,14 +9,12 @@ $copy = [
     'skills' => ['id' => 'Keahlian', 'en' => 'Skills'],
     'certificates' => ['id' => 'Sertifikat', 'en' => 'Certificates'],
     'contact' => ['id' => 'Kontak', 'en' => 'Contact'],
-    'eyebrow' => ['id' => 'MAHASISWA AGRIBISNIS', 'en' => 'AGRIBUSINESS STUDENT'],
+    'eyebrow' => ['id' => 'PROFIL & KARYA PILIHAN', 'en' => 'PROFILE & SELECTED WORK'],
     'intro' => ['id' => 'Mengenal lebih dekat,', 'en' => 'A little about'],
     'view_work' => ['id' => 'Lihat portofolio', 'en' => 'Explore portfolio'],
     'download_cv' => ['id' => 'Unduh CV', 'en' => 'Download CV'],
-    'semester' => ['id' => 'Semester', 'en' => 'Semester'],
-    'currently_studying' => ['id' => 'Sedang menempuh studi', 'en' => 'Currently studying'],
     'about_title' => ['id' => 'Perjalanan dan minat saya', 'en' => 'My background and interests'],
-    'about_empty' => ['id' => 'Saya mahasiswa Agribisnis semester 5 di Universitas Muhammadiyah Sukabumi. Informasi profil akan diperbarui seiring perjalanan studi dan pengalaman saya.', 'en' => 'I am a fifth-semester Agribusiness student at Universitas Muhammadiyah Sukabumi. I will update this profile as I build my academic and professional experience.'],
+    'about_empty' => ['id' => 'Portofolio pribadi yang memuat profil, karya, dan perjalanan saya.', 'en' => 'A personal portfolio featuring my profile, selected work, and experience.'],
     'education_title' => ['id' => 'Pendidikan', 'en' => 'Education'],
     'experience_title' => ['id' => 'Pengalaman', 'en' => 'Experience'],
     'project_title' => ['id' => 'Proyek pilihan', 'en' => 'Selected projects'],
@@ -35,16 +33,17 @@ $nameParts = preg_split('/\s+/', trim($profile['full_name'] ?? 'Mutiara Putri'))
 $firstName = array_shift($nameParts) ?: 'Mutiara';
 $lastName = implode(' ', $nameParts);
 $hasContact = ! empty($profile['email']) || ! empty($profile['linkedin_url']) || ! empty($profile['instagram_url']) || ! empty($profile['website']);
+$heroMeta = ! empty($profile['location']) ? $profile['location'] : portfolio_t($locale, ['id' => 'Profil pribadi · Karya pilihan', 'en' => 'Personal profile · Selected work']);
 ?>
 <!DOCTYPE html>
 <html lang="<?= esc($locale) ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="<?= esc(($profile['full_name'] ?? 'Mutiara Putri') . ' — ' . portfolio_localized($profile, 'headline', $locale, 'Agribusiness Student')) ?>">
+    <meta name="description" content="<?= esc(($profile['full_name'] ?? 'Mutiara Putri') . ' — ' . portfolio_localized($profile, 'headline', $locale, $locale === 'en' ? 'Personal Portfolio' : 'Portofolio Pribadi')) ?>">
     <meta name="theme-color" content="#f5f2e9">
     <link rel="icon" type="image/svg+xml" href="<?= base_url('assets/favicon.svg') ?>">
-    <title><?= esc($profile['full_name'] ?? 'Mutiara Putri') ?> — <?= esc(portfolio_localized($profile, 'headline', $locale, 'Agribusiness Student')) ?></title>
+    <title><?= esc($profile['full_name'] ?? 'Mutiara Putri') ?> — <?= esc(portfolio_localized($profile, 'headline', $locale, $locale === 'en' ? 'Personal Portfolio' : 'Portofolio Pribadi')) ?></title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
@@ -79,16 +78,16 @@ $hasContact = ! empty($profile['email']) || ! empty($profile['linkedin_url']) ||
 <main id="main-content">
     <section class="hero container" id="home">
         <div class="hero-copy">
-            <div class="eyebrow"><span class="eyebrow-dot"></span><?= esc($locale === 'en' ? 'AGRIBUSINESS STUDENT' : $t('eyebrow')) ?></div>
+            <div class="eyebrow"><span class="eyebrow-dot"></span><?= esc($t('eyebrow')) ?></div>
             <p class="hero-intro"><?= esc($t('intro')) ?></p>
             <h1><?= esc($firstName) ?><?php if ($lastName !== ''): ?><br><em><?= esc($lastName) ?></em><?php endif; ?></h1>
-            <p class="hero-role"><?= esc(portfolio_localized($profile, 'headline', $locale, 'Agribusiness Student')) ?></p>
+            <p class="hero-role"><?= esc(portfolio_localized($profile, 'headline', $locale, $locale === 'en' ? 'Personal Portfolio' : 'Portofolio Pribadi')) ?></p>
             <p class="hero-description"><?= nl2br(esc(portfolio_localized($profile, 'summary', $locale, $t('about_empty')))) ?></p>
             <div class="hero-actions">
                 <a class="button button-primary" href="#projects"><?= esc($t('view_work')) ?><span aria-hidden="true">↗</span></a>
                 <a class="button button-outline" href="<?= site_url('cv/' . $locale) ?>"><?= esc($t('download_cv')) ?><span aria-hidden="true">↓</span></a>
             </div>
-            <div class="hero-note"><span class="note-line"></span><span><?= esc($t('currently_studying')) ?> · <?= esc($profile['location'] ?? 'Universitas Muhammadiyah Sukabumi') ?></span></div>
+            <div class="hero-note"><span class="note-line"></span><span><?= esc($heroMeta) ?></span></div>
         </div>
         <div class="hero-visual" aria-label="<?= esc($profile['full_name'] ?? 'Mutiara Putri') ?>">
             <div class="visual-backdrop"></div>
@@ -98,8 +97,8 @@ $hasContact = ! empty($profile['email']) || ! empty($profile['linkedin_url']) ||
             <?php else: ?>
                 <div class="portrait-placeholder" aria-hidden="true"><span>MP</span><svg viewBox="0 0 360 390" role="presentation"><path d="M55 360c22-97 63-144 125-144s104 47 125 144"/><path d="M100 173c-5-69 24-113 80-113s85 44 80 113c-4 54-33 91-80 91s-76-37-80-91Z"/><path d="M115 130c32-10 56-34 67-63 19 34 43 51 76 57"/><path d="M75 318c-21-17-30-43-26-74M282 314c24-18 34-47 29-76"/></svg></div>
             <?php endif; ?>
-            <div class="visual-card"><span class="card-kicker"><?= esc($t('semester')) ?></span><strong>05</strong><span><?= esc($locale === 'en' ? 'Agribusiness' : 'Agribisnis') ?></span></div>
-            <div class="visual-caption"><span class="caption-rule"></span>UNIVERSITAS MUHAMMADIYAH<br>SUKABUMI</div>
+            <div class="visual-card"><span class="card-kicker"><?= $locale === 'en' ? 'PERSONAL' : 'PORTOFOLIO' ?></span><strong>01</strong><span><?= $locale === 'en' ? 'Selected profile' : 'Profil pilihan' ?></span></div>
+            <div class="visual-caption"><span class="caption-rule"></span><?= $locale === 'en' ? 'PERSONAL PROFILE<br>AND SELECTED WORK' : 'PROFIL PRIBADI<br>DAN KARYA PILIHAN' ?></div>
             <span class="visual-sparkle sparkle-one">✳</span><span class="visual-sparkle sparkle-two">✳</span>
         </div>
         <a class="scroll-cue" href="#about"><span></span><?= $locale === 'en' ? 'Scroll to explore' : 'Gulir untuk menjelajah' ?></a>
@@ -113,7 +112,6 @@ $hasContact = ! empty($profile['email']) || ! empty($profile['linkedin_url']) ||
                 <p class="about-text"><?= nl2br(esc(portfolio_localized($profile, 'summary', $locale, $t('about_empty')))) ?></p>
                 <?php if (! empty($profile['location'])): ?><p class="location-line"><span aria-hidden="true">⌖</span> <?= esc($profile['location']) ?></p><?php endif; ?>
             </div>
-            <div class="about-aside"><span class="aside-number">05</span><span class="aside-rule"></span><span><?= esc($t('semester')) ?><br><?= esc($locale === 'en' ? 'of study' : 'perkuliahan') ?></span></div>
         </div>
     </section>
 

@@ -63,7 +63,7 @@ $formatPeriod = static function (array $row) use ($locale): string {
 </head>
 <body>
 <div class="topline"></div>
-<table class="header"><tr><td class="header-main"><div class="doc-type"><?= esc($fullPortfolio ? $t('portfolio') : $t('cv')) ?></div><h1><?= esc($name) ?></h1><div class="headline"><?= esc(portfolio_localized($profile, 'headline', $locale, $locale === 'en' ? 'Agribusiness Student' : 'Mahasiswa Agribisnis')) ?></div></td><td><?php if (! empty($profile['avatar_data'])): ?><img class="profile-image" src="<?= esc($profile['avatar_data']) ?>" alt=""><?php endif; ?></td></tr></table>
+<table class="header"><tr><td class="header-main"><div class="doc-type"><?= esc($fullPortfolio ? $t('portfolio') : $t('cv')) ?></div><h1><?= esc($name) ?></h1><div class="headline"><?= esc(portfolio_localized($profile, 'headline', $locale, $locale === 'en' ? 'Personal Portfolio' : 'Portofolio Pribadi')) ?></div></td><td><?php if (! empty($profile['avatar_data'])): ?><img class="profile-image" src="<?= esc($profile['avatar_data']) ?>" alt=""><?php endif; ?></td></tr></table>
 <div class="contact">
     <?php if (! empty($profile['email'])): ?><span><?= esc($profile['email']) ?></span><?php endif; ?>
     <?php if (! empty($profile['phone'])): ?><span><?= esc($profile['phone']) ?></span><?php endif; ?>
