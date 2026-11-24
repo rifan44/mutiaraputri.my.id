@@ -83,7 +83,7 @@ writable/                session, cache, log, dan file runtime CI
 - **Tujuan:** Menyediakan website portofolio yang bisa diedit, responsif, dwibahasa, dan menghasilkan dokumen PDF.
 - **Acceptance criteria:** Website publik; panel admin terproteksi; isi awal sesuai fakta pengguna; file CV/portofolio A4; kode di repository GitHub.
 - **File/area terkait:** `app/`, `public/assets/`, `app/Database/`, `composer.json`, `README.md`, `PROJECT_CONTEXT.md`.
-- **Status terakhir:** Website aktif di `http://localhost/mutiaraputri/`; halaman publik, login admin, dan empat endpoint PDF merespons HTTP 200. Belum ada akun admin.
+- **Status terakhir:** Website aktif di `http://localhost/mutiaraputri/`; halaman publik, login admin, dan empat endpoint PDF merespons HTTP 200. Perubahan fitur ada di commit `3a4ee4a` pada `main`; belum ada akun admin.
 
 ## 7. Bug dan kendala
 
@@ -110,7 +110,7 @@ writable/                session, cache, log, dan file runtime CI
 
 ## 10. Handoff terakhir
 
-- **Ringkasan perubahan:** Tampilan portofolio dibuat lebih umum, semester dihapus dari headline/pendidikan, editor foto crop ditambahkan, MariaDB lokal dan Laragon aktif, serta PDF A4 empat endpoint ditinjau secara visual. Perubahan source saat ini menunggu commit/push.
+- **Ringkasan perubahan:** Tampilan portofolio dibuat lebih umum, semester dihapus dari headline/pendidikan, editor foto crop ditambahkan, MariaDB lokal dan Laragon aktif, serta PDF A4 empat endpoint ditinjau secara visual. Perubahan source sudah dipush ke branch `main`.
 - **File yang berubah:** Controller, migration, seeder, filter, helper, view, CSS/JS, konfigurasi, dependency, README, dan konteks proyek.
 - **Hal yang perlu diperiksa berikutnya:** Buat akun admin lokal, unggah foto pilihan dan coba crop, lengkapi konten, lalu siapkan domain/home server setelah pengguna siap.
 - **Perintah untuk melanjutkan:** `php spark portfolio:create-admin` dari folder repository. Aplikasi aktif melalui Laragon di `http://localhost/mutiaraputri/`.
