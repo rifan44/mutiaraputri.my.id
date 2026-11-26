@@ -6,10 +6,10 @@
 
 - **Nama:** Mutiara Putri Portfolio
 - **Tujuan:** Website portofolio pribadi dwibahasa untuk kebutuhan kampus dan lamaran profesional, dengan panel admin serta ekspor CV dan portofolio PDF.
-- **Status:** Aplikasi berjalan lokal melalui Laragon; MariaDB lokal, migration, dan seeder sudah aktif. Akun admin belum dibuat; domain dan home server belum dikonfigurasi.
+- **Status:** Aplikasi berjalan lokal melalui Laragon; MariaDB lokal, migration, seeder, dan akun admin lokal sudah siap. Domain dan home server belum dikonfigurasi.
 - **Branch aktif:** `main`
 - **Remote:** `origin` → `https://github.com/rifan44/mutiaraputri.my.id.git`
-- **Terakhir diperbarui:** 2026-11-24
+- **Terakhir diperbarui:** 2026-11-26
 
 ## 2. Tech stack aktual
 
@@ -83,13 +83,13 @@ writable/                session, cache, log, dan file runtime CI
 - **Tujuan:** Menyediakan website portofolio yang bisa diedit, responsif, dwibahasa, dan menghasilkan dokumen PDF.
 - **Acceptance criteria:** Website publik; panel admin terproteksi; isi awal sesuai fakta pengguna; file CV/portofolio A4; kode di repository GitHub.
 - **File/area terkait:** `app/`, `public/assets/`, `app/Database/`, `composer.json`, `README.md`, `PROJECT_CONTEXT.md`.
-- **Status terakhir:** Website aktif di `http://localhost/mutiaraputri/`; halaman publik, login admin, dan empat endpoint PDF merespons HTTP 200. Perubahan fitur ada di commit `3a4ee4a` pada `main`; belum ada akun admin.
+- **Status terakhir:** Website aktif di `http://localhost/mutiaraputri/`; MariaDB khusus proyek berjalan di `127.0.0.1:3307`, halaman publik/admin dan endpoint PDF merespons HTTP 200. Akun admin dibuat pengguna; kredensial tidak disimpan di repository.
 
 ## 7. Bug dan kendala
 
 | Masalah | Cara reproduksi | Status | Catatan |
 |---|---|---|---|
-| Akun admin lokal belum dibuat | Jalankan `php spark portfolio:create-admin` dari folder proyek | Menunggu tindakan pengguna | Buat akun dengan identitas dan kata sandi pilihan sendiri; jangan menyimpan kredensial di repo. |
+| MariaDB lokal sempat berhenti | Cek listener port 3307 dan nyalakan `mariadbd` dengan konfigurasi data proyek bila perlu | Pulih | MySQL Laragon di port 3306 tidak terdampak; data MariaDB lokal tetap utuh. |
 | Domain belum diarahkan ke home server | Akses domain setelah DNS/HTTPS dikonfigurasi | Menunggu konfigurasi jaringan | Perlu memastikan akses publik dan status CGNAT. |
 
 ## 8. Pengujian
@@ -104,7 +104,7 @@ writable/                session, cache, log, dan file runtime CI
 
 ## 9. Next tasks
 
-1. [ ] Jalankan `php spark portfolio:create-admin` di Laragon, lalu isi foto/kontak/proyek dari `/admin`.
+1. [ ] Login ke `/admin`, ganti kata sandi sementara sebelum deployment, lalu isi foto/kontak/proyek.
 2. [ ] Tinjau hasil crop dengan foto pilihan dan lengkapi konten sebelum memakai PDF untuk pengajuan.
 3. [ ] Arahkan document root ke `public/`, pasang HTTPS, dan konfigurasi DNS/server sesuai jaringan home server.
 
@@ -112,5 +112,5 @@ writable/                session, cache, log, dan file runtime CI
 
 - **Ringkasan perubahan:** Tampilan portofolio dibuat lebih umum, semester dihapus dari headline/pendidikan, editor foto crop ditambahkan, MariaDB lokal dan Laragon aktif, serta PDF A4 empat endpoint ditinjau secara visual. Perubahan source sudah dipush ke branch `main`.
 - **File yang berubah:** Controller, migration, seeder, filter, helper, view, CSS/JS, konfigurasi, dependency, README, dan konteks proyek.
-- **Hal yang perlu diperiksa berikutnya:** Buat akun admin lokal, unggah foto pilihan dan coba crop, lengkapi konten, lalu siapkan domain/home server setelah pengguna siap.
-- **Perintah untuk melanjutkan:** `php spark portfolio:create-admin` dari folder repository. Aplikasi aktif melalui Laragon di `http://localhost/mutiaraputri/`.
+- **Hal yang perlu diperiksa berikutnya:** Login admin, unggah foto pilihan dan coba crop, lengkapi konten, lalu siapkan domain/home server setelah pengguna siap.
+- **Perintah untuk melanjutkan:** Aplikasi aktif melalui Laragon di `http://localhost/mutiaraputri/`; cek MariaDB khusus proyek pada port `3307` jika koneksi kembali ditolak.
