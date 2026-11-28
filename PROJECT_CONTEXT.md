@@ -6,10 +6,10 @@
 
 - **Nama:** Mutiara Putri Portfolio
 - **Tujuan:** Website portofolio pribadi dwibahasa untuk kebutuhan kampus dan lamaran profesional, dengan panel admin serta ekspor CV dan portofolio PDF.
-- **Status:** Aplikasi berjalan lokal melalui Laragon; MariaDB lokal, migration, seeder, dan akun admin lokal sudah siap. Domain dan home server belum dikonfigurasi.
+- **Status:** Source siap deploy dan sudah dipush. Domain sudah didelegasikan ke nameserver Cloudflare; record web, Nginx vhost, dan Cloudflare Tunnel untuk website ini belum dibuat.
 - **Branch aktif:** `main`
 - **Remote:** `origin` → `https://github.com/rifan44/mutiaraputri.my.id.git`
-- **Terakhir diperbarui:** 2026-11-26
+- **Terakhir diperbarui:** 2026-11-28
 
 ## 2. Tech stack aktual
 
@@ -24,7 +24,7 @@
 | PDF | Dompdf 3.1.6 | `composer.json`, `composer.lock`, `app/Controllers/Export.php` |
 | Runtime lokal yang terlihat | PHP 8.4.27, Node.js 24.13.0; tidak ada proses build frontend | CLI saat pemeriksaan awal |
 | Testing | PHPUnit 10.5 tersedia dari app starter; belum dijalankan | `composer.json`, `composer.lock`, `phpunit.dist.xml` |
-| Deployment | Belum dikonfigurasi; domain sudah dimiliki pengguna, home server belum disambungkan | `.env.example`, `README.md` |
+| Deployment | Persiapan terkonfirmasi via SSH: Ubuntu 26.04, Nginx, MariaDB, PHP-FPM 8.5 aktif; `cloudflared` terpasang tapi service belum aktif | Pemeriksaan SSH read-only; vhost/domain belum ada |
 
 ## 3. Arsitektur dan struktur
 
@@ -65,7 +65,7 @@ writable/                session, cache, log, dan file runtime CI
 | Ekspor PDF | Done | `/cv/{id|en}` dan `/portfolio/{id|en}/pdf`, menggunakan Dompdf; CV dan portofolio Indonesia/Inggris sudah dirender dan ditinjau sebagai PDF A4 satu halaman. |
 | Data awal Mutiara Putri | Done | Nama, universitas, dan program studi ditampilkan sewajarnya di pendidikan; semester 5 hanya ada di deskripsi profil singkat. Kontak/proyek/pengalaman tidak dikarang. |
 | MariaDB | Done (lokal) | MariaDB lokal terisolasi di port 3307; migration dan seeder selesai. Database produksi belum disiapkan. |
-| Domain dan home server | Not started | DNS, HTTPS, reverse proxy/tunnel, dan document root `public/` belum dikonfigurasi. |
+| Domain dan home server | In Progress | NS Cloudflare aktif dan SOA terjawab; apex/`www` belum memiliki record web. Belum ada vhost Nginx atau tunnel bernama proyek ini. |
 
 ## 5. Keputusan teknis
 
@@ -79,18 +79,18 @@ writable/                session, cache, log, dan file runtime CI
 
 ## 6. Pekerjaan aktif
 
-- **Task:** Menyempurnakan UI, editor foto, dan menjalankan aplikasi lokal melalui Laragon; sinkronkan source ke GitHub.
+- **Task:** Menyiapkan deployment website melalui Nginx dan Cloudflare Tunnel pada home server.
 - **Tujuan:** Menyediakan website portofolio yang bisa diedit, responsif, dwibahasa, dan menghasilkan dokumen PDF.
 - **Acceptance criteria:** Website publik; panel admin terproteksi; isi awal sesuai fakta pengguna; file CV/portofolio A4; kode di repository GitHub.
 - **File/area terkait:** `app/`, `public/assets/`, `app/Database/`, `composer.json`, `README.md`, `PROJECT_CONTEXT.md`.
-- **Status terakhir:** Website aktif di `http://localhost/mutiaraputri/`; MariaDB khusus proyek berjalan di `127.0.0.1:3307`, halaman publik/admin dan endpoint PDF merespons HTTP 200. Akun admin dibuat pengguna; kredensial tidak disimpan di repository.
+- **Status terakhir:** Repository `main` bersih dan sinkron dengan GitHub. Server Ubuntu 26.04 terjangkau via SSH; Nginx/MariaDB/PHP-FPM aktif, `cloudflared` tersedia tetapi belum berjalan. Nameserver publik Cloudflare menjawab SOA; record A/AAAA/CNAME website belum ada. Kredensial akun tidak disimpan di repository.
 
 ## 7. Bug dan kendala
 
 | Masalah | Cara reproduksi | Status | Catatan |
 |---|---|---|---|
 | MariaDB lokal sempat berhenti | Cek listener port 3307 dan nyalakan `mariadbd` dengan konfigurasi data proyek bila perlu | Pulih | MySQL Laragon di port 3306 tidak terdampak; data MariaDB lokal tetap utuh. |
-| Domain belum diarahkan ke home server | Akses domain setelah DNS/HTTPS dikonfigurasi | Menunggu konfigurasi jaringan | Perlu memastikan akses publik dan status CGNAT. |
+| Website belum dipublikasikan | Akses apex atau `www` setelah deploy | Menunggu deployment | Buat production DB/`.env`, Nginx vhost ke `public/`, public hostname tunnel, dan CNAME; tidak perlu port-forward router. |
 
 ## 8. Pengujian
 
@@ -104,13 +104,13 @@ writable/                session, cache, log, dan file runtime CI
 
 ## 9. Next tasks
 
-1. [ ] Login ke `/admin`, ganti kata sandi sementara sebelum deployment, lalu isi foto/kontak/proyek.
-2. [ ] Tinjau hasil crop dengan foto pilihan dan lengkapi konten sebelum memakai PDF untuk pengajuan.
-3. [ ] Arahkan document root ke `public/`, pasang HTTPS, dan konfigurasi DNS/server sesuai jaringan home server.
+1. [ ] Deploy source ke home server, buat database produksi baru, siapkan `.env` production dan Nginx vhost.
+2. [ ] Buat/aktifkan Cloudflare Tunnel dan public hostname apex/`www`; verifikasi HTTPS.
+3. [ ] Buat akun admin production, ganti kata sandi sementara, unggah foto pilihan, dan lengkapi konten.
 
 ## 10. Handoff terakhir
 
-- **Ringkasan perubahan:** Tampilan portofolio dibuat lebih umum, semester dihapus dari headline/pendidikan, editor foto crop ditambahkan, MariaDB lokal dan Laragon aktif, serta PDF A4 empat endpoint ditinjau secara visual. Perubahan source sudah dipush ke branch `main`.
+- **Ringkasan perubahan:** Tampilan portofolio dan editor foto selesai; source dipush. Pemeriksaan deployment menemukan nameserver sudah Cloudflare, tetapi record web, Nginx vhost, dan tunnel website belum ada.
 - **File yang berubah:** Controller, migration, seeder, filter, helper, view, CSS/JS, konfigurasi, dependency, README, dan konteks proyek.
-- **Hal yang perlu diperiksa berikutnya:** Login admin, unggah foto pilihan dan coba crop, lengkapi konten, lalu siapkan domain/home server setelah pengguna siap.
-- **Perintah untuk melanjutkan:** Aplikasi aktif melalui Laragon di `http://localhost/mutiaraputri/`; cek MariaDB khusus proyek pada port `3307` jika koneksi kembali ditolak.
+- **Hal yang perlu diperiksa berikutnya:** Siapkan Nginx/production DB, aktifkan Cloudflare Tunnel hostname, lalu login admin production dan verifikasi upload/PDF.
+- **Perintah untuk melanjutkan:** Ikuti urutan deploy dari pembahasan; jalankan perintah `sudo` sendiri di SSH bila diminta password, jangan membagikan password atau tunnel token.
